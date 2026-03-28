@@ -11,7 +11,7 @@ DGMAHIRU is a cinematic landing page for an autonomous perpetual futures trading
   - Animated backtest metrics at the trading desk
   - Strategy and roadmap module near the bookshelf
 - Responsive overlay system tuned for desktop and mobile
-- Research and strategy files kept in the same workspace for future product integration
+- Production-ready single-page frontend built at the repo root
 
 ## Stack
 
@@ -49,15 +49,13 @@ npm run preview
 │   ├── App.jsx
 │   ├── main.jsx
 │   └── styles.css
-├── decision-engine-v24.ts
-├── degenclaw_strategy.md
-├── idx_watchlist_masterplan.md
-├── runner_*.ts
-└── telegram-commands.ts
+├── index.html
+├── package.json
+├── vite.config.mjs
+└── README.md
 ```
 
 ## Notes
 
 - The landing page lives at the repo root.
-- Trading research and runner files are preserved as part of the workspace context.
 - The current CTA is intentionally a placeholder pending the leaderboard destination.
