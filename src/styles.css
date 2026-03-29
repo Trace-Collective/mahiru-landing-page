@@ -271,6 +271,9 @@ a {
   -webkit-mask:
     linear-gradient(#fff 0 0) content-box,
     linear-gradient(#fff 0 0);
+  mask:
+    linear-gradient(#fff 0 0) content-box,
+    linear-gradient(#fff 0 0);
   -webkit-mask-composite: xor;
   mask-composite: exclude;
 }
@@ -299,6 +302,7 @@ a {
   font-size: 0.68rem;
   letter-spacing: 0.24em;
   text-transform: uppercase;
+  white-space: nowrap;
 }
 
 .panel-chip {
@@ -310,12 +314,16 @@ a {
   font-size: 0.64rem;
   letter-spacing: 0.18em;
   text-transform: uppercase;
+  white-space: nowrap;
 }
 
 .hero-panel {
   top: 16vh;
   left: clamp(1.2rem, 4vw, 4rem);
-  width: min(31rem, calc(100vw - 2.4rem));
+  width: max-content;
+  min-width: min(31rem, calc(100vw - 2.4rem));
+  max-width: calc(100vw - 2.4rem);
+  transform: translate3d(0, var(--panel-y, 0px), 0) scale(var(--panel-scale, 1));
 }
 
 .hero-stack {
@@ -334,6 +342,7 @@ a {
     0 0 12px rgba(160, 255, 189, 0.7),
     0 0 28px rgba(110, 255, 151, 0.24),
     0 0 52px rgba(110, 255, 151, 0.12);
+  animation: textFlicker 4s steps(2, end) infinite alternate;
 }
 
 .hero-copy {
@@ -359,6 +368,7 @@ a {
   font-size: 0.68rem;
   letter-spacing: 0.14em;
   text-transform: uppercase;
+  white-space: nowrap;
 }
 
 .hero-actions {
@@ -396,6 +406,7 @@ a {
   bottom: 9vh;
   left: 50%;
   width: min(50rem, calc(100vw - 2.6rem));
+  transform: translate3d(-50%, var(--panel-y, 0px), 0) scale(var(--panel-scale, 1));
 }
 
 .stats-copy {
@@ -435,6 +446,16 @@ a {
   box-shadow:
     inset 0 1px 0 rgba(255, 255, 255, 0.05),
     0 0 24px rgba(124, 255, 157, 0.05);
+  transition: transform 0.2s ease, box-shadow 0.2s ease, background 0.2s ease;
+}
+
+.metric-card:hover {
+  transform: translateY(-2px);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.08),
+    0 4px 32px rgba(124, 255, 157, 0.12);
+  background:
+    linear-gradient(180deg, rgba(12, 28, 19, 0.78), rgba(6, 15, 10, 0.45));
 }
 
 .metric-label {
@@ -455,6 +476,7 @@ a {
   right: clamp(1rem, 3vw, 3rem);
   bottom: 8vh;
   width: min(34rem, calc(100vw - 2.2rem));
+  transform: translate3d(0, var(--panel-y, 0px), 0) scale(var(--panel-scale, 1));
 }
 
 .systems-header {
@@ -494,6 +516,17 @@ a {
   box-shadow:
     inset 0 1px 0 rgba(255, 255, 255, 0.05),
     0 0 24px rgba(124, 255, 157, 0.06);
+  transition: transform 0.2s ease, box-shadow 0.2s ease, background 0.2s ease;
+}
+
+.logic-card:hover,
+.roadmap-item:hover {
+  transform: translateY(-2px);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.08),
+    0 4px 32px rgba(124, 255, 157, 0.12);
+  background:
+    linear-gradient(180deg, rgba(10, 24, 17, 0.78), rgba(5, 14, 9, 0.45));
 }
 
 .logic-eyebrow,
@@ -544,7 +577,7 @@ a {
 
 .roadmap-line {
   position: absolute;
-  inset: auto 0 1.55rem 0;
+  inset: auto 0 -0.37rem 0;
   height: 2px;
   border-radius: 999px;
   background: linear-gradient(90deg, rgba(124, 255, 157, 0.24), rgba(196, 255, 209, 0.9), rgba(124, 255, 157, 0.24));
@@ -561,7 +594,8 @@ a {
 .roadmap-item::before {
   content: "";
   position: absolute;
-  left: 1rem;
+  left: 50%;
+  transform: translateX(-50%);
   bottom: -0.72rem;
   width: 0.7rem;
   height: 0.7rem;
@@ -595,37 +629,83 @@ a {
   }
 }
 
+@keyframes textFlicker {
+  0%, 79%, 81%, 99%, 100% {
+    opacity: 1;
+    text-shadow:
+      0 0 12px rgba(160, 255, 189, 0.7),
+      0 0 28px rgba(110, 255, 151, 0.24),
+      0 0 52px rgba(110, 255, 151, 0.12);
+  }
+  80%, 99.5% {
+    opacity: 0.85;
+    text-shadow:
+      0 0 8px rgba(160, 255, 189, 0.4),
+      0 0 16px rgba(110, 255, 151, 0.14);
+  }
+}
+
 @media (max-width: 900px) {
   .scene-chrome {
-    padding: 1rem;
-    gap: 0.8rem;
+    padding: 0.8rem 1rem;
+    gap: 0.6rem;
     flex-direction: column;
+    justify-content: flex-start;
+  }
+
+  .chrome-brand strong {
+    font-size: 0.95rem;
   }
 
   .chrome-progress {
     width: 100%;
     justify-content: space-between;
+    margin-top: 0.2rem;
   }
 
   .hero-panel,
   .stats-panel,
   .systems-panel {
     left: 1rem;
-    right: 1rem;
-    width: auto;
+    right: auto;
+    width: calc(100vw - 2rem);
+    
+    /* Option A: internal scrolling on panels */
+    max-height: calc(100vh - 12rem);
+    overflow-y: auto;
+    scrollbar-width: thin;
+    scrollbar-color: rgba(124, 255, 157, 0.4) rgba(0, 0, 0, 0.2);
+  }
+
+  .floating-panel::-webkit-scrollbar {
+    width: 4px;
+    height: 4px;
+  }
+  
+  .floating-panel::-webkit-scrollbar-track {
+    background: rgba(0, 0, 0, 0.2);
+    border-radius: 4px;
+  }
+  
+  .floating-panel::-webkit-scrollbar-thumb {
+    background: rgba(124, 255, 157, 0.4);
+    border-radius: 4px;
   }
 
   .hero-panel {
-    top: 12vh;
+    top: 14vh;
+    transform: translate3d(0, var(--panel-y, 0px), 0) scale(var(--panel-scale, 1));
   }
 
   .stats-panel {
-    bottom: 6.5vh;
-    transform: none !important;
+    bottom: 5.5vh;
+    transform: translate3d(0, var(--panel-y, 0px), 0) scale(var(--panel-scale, 1));
   }
 
   .systems-panel {
-    bottom: 4vh;
+    top: 14vh; 
+    bottom: auto;
+    transform: translate3d(0, var(--panel-y, 0px), 0) scale(var(--panel-scale, 1));
   }
 
   .stats-copy,
@@ -644,9 +724,14 @@ a {
     display: none;
   }
 
+  .roadmap-item {
+    padding-left: 2.6rem;
+  }
+
   .roadmap-item::before {
     bottom: auto;
-    top: -0.35rem;
+    top: 1.25rem;
+    left: 1.1rem;
   }
 }
 
@@ -655,33 +740,89 @@ a {
     left: 1rem;
     right: 1rem;
     justify-content: space-between;
+    bottom: 1rem;
   }
 
   .hero-panel {
-    top: 10vh;
+    top: 13vh;
   }
 
   .hero-panel h1 {
-    font-size: clamp(2rem, 13vw, 3.4rem);
+    font-size: clamp(2rem, 9vw, 2.6rem);
+    word-break: break-word;
   }
 
   .hero-copy {
-    font-size: 1rem;
-  }
-
-  .stats-panel {
-    bottom: 5vh;
+    font-size: 0.95rem;
   }
 
   .panel-header {
     align-items: flex-start;
     flex-direction: column;
+    gap: 0.5rem;
   }
 
-  .stats-grid,
+  .panel-chip {
+    align-self: flex-start;
+  }
+
+  .stats-panel {
+    bottom: 5rem;
+  }
+
+  .stats-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .metric-value {
+    font-size: clamp(1.2rem, 5vw, 1.35rem);
+  }
+
   .strategy-cards,
   .roadmap-grid {
     grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 480px) {
+  .hero-panel h1 {
+    font-size: clamp(1.5rem, 8vw, 2rem);
+    word-break: break-word;
+  }
+
+  .stats-grid {
+    gap: 0.6rem;
+  }
+
+  .metric-card {
+    padding: 0.8rem 0.8rem 0.75rem;
+  }
+
+  .systems-panel {
+    top: 12vh;
+  }
+  
+  .logic-card,
+  .roadmap-item {
+    padding: 0.8rem 1rem;
+  }
+  
+  .roadmap-item {
+    padding-left: 2.4rem;
+  }
+  
+  .roadmap-item::before {
+    top: 1.05rem;
+    left: 0.9rem;
+  }
+
+  .chrome-progress {
+    gap: 0.3rem; 
+  }
+  
+  .progress-stop {
+    min-width: 3rem;
+    font-size: 0.65rem;
   }
 }
 

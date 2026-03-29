@@ -380,9 +380,8 @@ function App() {
               className="floating-panel hero-panel"
               style={{
                 opacity: heroVisibility,
-                transform: `translate3d(0, ${28 - heroVisibility * 28}px, 0) scale(${
-                  0.94 + heroVisibility * 0.06
-                })`,
+                "--panel-y": `${28 - heroVisibility * 28}px`,
+                "--panel-scale": 0.94 + heroVisibility * 0.06,
                 filter: `blur(${(1 - heroVisibility) * 14}px)`,
               }}
             >
@@ -419,9 +418,8 @@ function App() {
               className="floating-panel stats-panel"
               style={{
                 opacity: statsVisibility,
-                transform: `translate3d(-50%, ${
-                  36 - statsVisibility * 36
-                }px, 0) scale(${0.92 + statsVisibility * 0.08})`,
+                "--panel-y": `${36 - statsVisibility * 36}px`,
+                "--panel-scale": 0.92 + statsVisibility * 0.08,
                 filter: `blur(${(1 - statsVisibility) * 16}px)`,
               }}
             >
@@ -451,9 +449,8 @@ function App() {
               className="floating-panel systems-panel"
               style={{
                 opacity: systemsVisibility,
-                transform: `translate3d(0, ${
-                  42 - systemsVisibility * 42
-                }px, 0) scale(${0.94 + systemsVisibility * 0.06})`,
+                "--panel-y": `${42 - systemsVisibility * 42}px`,
+                "--panel-scale": 0.94 + systemsVisibility * 0.06,
                 filter: `blur(${(1 - systemsVisibility) * 18}px)`,
               }}
             >
